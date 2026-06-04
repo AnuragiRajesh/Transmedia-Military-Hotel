@@ -1,0 +1,99 @@
+/* ── Design tokens + resets ───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Bebas+Neue&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+:root {
+  --olive: #4a5240;
+  --olive-dark: #2c3020;
+  --olive-light: #7a8c6a;
+  --gold: #c8a84b;
+  --gold-light: #e8c96a;
+  --cream: #f4ede0;
+  --cream-dark: #e8dcc8;
+
+  /* Warm espresso/mahogany palette — replaces cold blacks */
+  --charcoal: #1e130a;
+  /* main body bg — deep espresso */
+  --bg-deep: #150d05;
+  /* darkest sections */
+  --bg-mid: #261709;
+  /* alternate sections */
+  --bg-card: #2e1c0e;
+  /* card / panel bg */
+  --rust: #8b3a2a;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--charcoal);
+  color: var(--cream);
+  font-family: 'Source Serif 4', serif;
+  overflow-x: hidden;
+}
+
+/* ── Shared typography ─────────────────────────────────────────────────── */
+.section-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 32px;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 40px;
+}
+
+.body-text {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--cream-dark);
+  max-width: 680px;
+  opacity: 0.9;
+}
+
+.body-text+.body-text {
+  margin-top: 20px;
+}
+
+/* ── Shared section wrapper ────────────────────────────────────────────── */
+.section-inner {
+  padding: 80px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Leaflet override (map height) ─────────────────────────────────────── */
+.leaflet-container {
+  font-family: 'Source Serif 4', serif;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section-inner {
+    padding: 60px 24px;
+  }
+}
