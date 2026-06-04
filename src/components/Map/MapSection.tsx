@@ -6,7 +6,8 @@ import 'leaflet/dist/leaflet.css'
 import { HOTELS } from '../../data/hotels'
 
 /* ── Fix Leaflet default icon paths in Vite ─────────────────────────── */
-delete (L.Icon.Default.prototype as Record<string, unknown>)._getIconUrl
+// Cast prototype to unknown first to avoid an incorrect direct cast to Record
+delete ((L.Icon.Default.prototype as unknown) as Record<string, unknown>)._getIconUrl
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
