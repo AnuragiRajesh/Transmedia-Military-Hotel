@@ -22,7 +22,7 @@ export default function Footer(): JSX.Element {
 
             <div style={{ fontSize: 13, color: 'var(--olive-light)', opacity: 0.6, textAlign: 'center', lineHeight: 1.6 }}>
                 A convergent journalism project · May 2026<br />
-                Produced by the Department of Journalism, Bengaluru<br />
+                Produced by the Group 10 at the Azim Premji University, Bengaluru<br />
                 Built with React + TypeScript + Three.js + Leaflet
             </div>
 
