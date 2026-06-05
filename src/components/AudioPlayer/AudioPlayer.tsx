@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import type { JSX } from 'react'
 import { AUDIO_TRACKS } from '../../data/audioTracks'
+import { AUDIO_TRACKS_LABEL } from '../../data/audioTracks'
 
 function WaveformBars({ isPlaying, progress }: { isPlaying: boolean; progress: number }): JSX.Element {
     const heights = [30, 60, 45, 80, 55, 70, 40, 90, 65, 75, 35, 85, 50, 70, 60, 45, 80, 55, 65, 40, 75, 90, 60, 50, 70, 45, 85, 55, 65, 30, 80, 70, 45, 60, 90, 75, 55, 40, 65, 80]
@@ -27,28 +28,70 @@ function WaveformBars({ isPlaying, progress }: { isPlaying: boolean; progress: n
     )
 }
 
+function formatTime(s: number) {
+    if (!isFinite(s) || s <= 0) return '0:00'
+    const sec = Math.floor(s)
+    const m = Math.floor(sec / 60)
+    const ss = sec % 60
+    return `${m}:${ss.toString().padStart(2, '0')}`
+}
+
 export default function AudioSection(): JSX.Element {
-    const [activeTrack, setActiveTrack] = useState(0)
+    const [activeTrack] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false)
     const [progress, setProgress] = useState(0)
-    const timer = useRef<ReturnType<typeof setInterval> | null>(null)
+    const [duration, setDuration] = useState(0)
+    const [currentTime, setCurrentTime] = useState(0)
+    const audioRef = useRef<HTMLAudioElement | null>(null)
 
+    // Sync play/pause with the actual audio element
     useEffect(() => {
+        const audio = audioRef.current
+        if (!audio) return
         if (isPlaying) {
-            timer.current = setInterval(() => {
-                setProgress(p => {
-                    if (p >= 100) { setIsPlaying(false); return 0 }
-                    return p + 0.3
-                })
-            }, 100)
+            audio.play().catch(() => setIsPlaying(false))
         } else {
-            if (timer.current) clearInterval(timer.current)
+            audio.pause()
         }
-        return () => { if (timer.current) clearInterval(timer.current) }
     }, [isPlaying])
 
-    const selectTrack = (i: number) => {
-        setActiveTrack(i); setProgress(0); setIsPlaying(false)
+    // Update progress from audio element timeupdate and handle ended
+    useEffect(() => {
+        const audio = audioRef.current
+        if (!audio) return
+        const onTime = () => {
+            const d = audio.duration || 1
+            setCurrentTime(audio.currentTime)
+            setProgress((audio.currentTime / d) * 100)
+        }
+        const onLoaded = () => {
+            setDuration(audio.duration || 0)
+        }
+        const onEnded = () => setIsPlaying(false)
+        audio.addEventListener('timeupdate', onTime)
+        audio.addEventListener('loadedmetadata', onLoaded)
+        audio.addEventListener('ended', onEnded)
+        return () => {
+            audio.removeEventListener('timeupdate', onTime)
+            audio.removeEventListener('loadedmetadata', onLoaded)
+            audio.removeEventListener('ended', onEnded)
+        }
+    }, [])
+
+    const clamp = (v: number, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+
+    const seekTo = (time: number) => {
+        const audio = audioRef.current
+        if (!audio) return
+        audio.currentTime = clamp(time, 0, audio.duration || 0)
+        setCurrentTime(audio.currentTime)
+        setProgress(((audio.currentTime) / (audio.duration || 1)) * 100)
+    }
+
+    const seekBy = (offset: number) => {
+        const audio = audioRef.current
+        if (!audio) return
+        seekTo(audio.currentTime + offset)
     }
 
     return (
@@ -58,11 +101,9 @@ export default function AudioSection(): JSX.Element {
         }}>
             <div style={{ maxWidth: 800, margin: '0 auto' }}>
                 <div className="section-label">Audio Journalism</div>
-                <h2 className="section-title">Voices from the Kitchen</h2>
+                <h2 className="section-title">Voices from the Community</h2>
                 <div className="divider" />
-                <p className="body-text" style={{ maxWidth: 600 }}>
-                    Oral histories, field recordings, and interviews with owners and veterans.
-                </p>
+             
 
                 {/* Player */}
                 <div style={{
@@ -75,13 +116,27 @@ export default function AudioSection(): JSX.Element {
                         fontFamily: "'Playfair Display', serif",
                         fontSize: 22, color: 'var(--cream)', marginBottom: 6,
                     }}>
-                        {AUDIO_TRACKS[activeTrack].title}
+                        {AUDIO_TRACKS_LABEL[0].title}
                     </div>
                     <div style={{ fontSize: 13, color: 'var(--olive-light)', marginBottom: 24 }}>
-                        {AUDIO_TRACKS[activeTrack].sub}
+                        {AUDIO_TRACKS_LABEL[0].sub}
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 20 }}>
+                        {/* Skip Back 10s */}
+                        <button
+                            onClick={() => seekBy(-10)}
+                            style={{
+                                width: 44, height: 44, borderRadius: '50%',
+                                border: '1px solid rgba(200,168,75,0.12)',
+                                background: 'transparent', color: 'var(--gold)',
+                                fontSize: 14, cursor: 'pointer'
+                            }}
+                            aria-label="Back 10s"
+                        >
+                            ⏪
+                        </button>
+
                         {/* Play / Pause */}
                         <button
                             onClick={() => setIsPlaying(p => !p)}
@@ -103,28 +158,60 @@ export default function AudioSection(): JSX.Element {
                         <div
                             style={{ flex: 1, height: 48, display: 'flex', alignItems: 'center', gap: 2, cursor: 'pointer' }}
                             onClick={(e) => {
-                                const rect = e.currentTarget.getBoundingClientRect()
-                                setProgress(((e.clientX - rect.left) / rect.width) * 100)
+                                const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+                                const pct = clamp((e.clientX - rect.left) / rect.width, 0, 1)
+                                const audio = audioRef.current
+                                if (!audio) return
+                                seekTo(pct * (audio.duration || 0))
                             }}
                         >
                             <WaveformBars isPlaying={isPlaying} progress={progress} />
                         </div>
 
-                        <div style={{
-                            fontFamily: "'Bebas Neue', sans-serif",
-                            fontSize: 16, letterSpacing: 2,
-                            color: 'var(--olive-light)',
-                        }}>
-                            {AUDIO_TRACKS[activeTrack].dur}
+                        {/* Skip Forward 10s */}
+                        <button
+                            onClick={() => seekBy(10)}
+                            style={{
+                                width: 44, height: 44, borderRadius: '50%',
+                                border: '1px solid rgba(200,168,75,0.12)',
+                                background: 'transparent', color: 'var(--gold)',
+                                fontSize: 14, cursor: 'pointer'
+                            }}
+                            aria-label="Forward 10s"
+                        >
+                            ⏩
+                        </button>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                            <div style={{
+                                fontFamily: "'Bebas Neue', sans-serif",
+                                fontSize: 16, letterSpacing: 2,
+                                color: 'var(--olive-light)',
+                            }}>
+                                {formatTime(duration)}
+                            </div>
+                            <div style={{ fontSize: 11, color: 'var(--olive-light)', marginTop: 4 }}>
+                                -{formatTime(Math.max(0, duration - currentTime))}
+                            </div>
                         </div>
                     </div>
 
                     {/* Progress bar */}
-                    <div style={{
-                        width: '100%', height: 2,
-                        background: 'rgba(200,168,75,0.15)',
-                        cursor: 'pointer',
-                    }}>
+                    <div
+                        style={{
+                            width: '100%', height: 8,
+                            background: 'rgba(200,168,75,0.15)',
+                            borderRadius: 4,
+                            cursor: 'pointer',
+                        }}
+                        onClick={(e) => {
+                            const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+                            const pct = clamp((e.clientX - rect.left) / rect.width, 0, 1)
+                            const audio = audioRef.current
+                            if (!audio) return
+                            seekTo(pct * (audio.duration || 0))
+                        }}
+                    >
                         <div style={{
                             height: '100%',
                             width: `${progress}%`,
@@ -132,6 +219,8 @@ export default function AudioSection(): JSX.Element {
                             transition: 'width 0.5s linear',
                         }} />
                     </div>
+                    {/* Hidden native audio element that actually plays the file */}
+                    <audio ref={audioRef} src={AUDIO_TRACKS_LABEL[0].src} preload="metadata" />
                 </div>
 
                 {/* Track list */}
@@ -139,7 +228,6 @@ export default function AudioSection(): JSX.Element {
                     {AUDIO_TRACKS.map((t, i) => (
                         <div
                             key={t.id}
-                            onClick={() => selectTrack(i)}
                             style={{
                                 display: 'flex', alignItems: 'center', gap: 16,
                                 padding: '14px 16px',
@@ -149,7 +237,6 @@ export default function AudioSection(): JSX.Element {
                                 background: activeTrack === i
                                     ? 'rgba(200,168,75,0.08)'
                                     : 'transparent',
-                                cursor: 'pointer',
                                 transition: 'background 0.2s',
                             }}
                         >

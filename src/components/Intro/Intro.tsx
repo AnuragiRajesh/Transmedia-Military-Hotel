@@ -4,12 +4,13 @@ import TextReveal from '../ScrollStory/TextReveal'
 export default function Intro(): JSX.Element {
     const stats: [string, string][] = [
         ['6', 'Iconic Military Hotels'],
-        ['90+', 'Years of History'],
-        ['24K+', 'Google Reviews'],
-        ['₹80', 'Average Plate Cost'],
+        ['100+', 'Years of History'],
+        ['24K+', 'Combined Customer Reviews'],
+        ['₹150–250', 'Typical Meal Cost'],
     ]
 
     return (
+                <>
         <section id="intro" style={{ background: 'linear-gradient(180deg, #261709 0%, var(--charcoal) 100%)' }}>
             <div className="section-inner">
                 <div style={{
@@ -35,17 +36,14 @@ export default function Intro(): JSX.Element {
                                     fontFamily: "'Playfair Display', serif",
                                     fontWeight: 900, lineHeight: 0.75,
                                     color: 'var(--gold)', marginRight: 12, marginTop: 8,
-                                }}>L</span>
-                                ong before Bengaluru became Silicon Valley, it was a garrison town. When the British East India Company established the cantonment in 1799, an entire economy of mess kitchens, supply chains, and cooks grew up around it. The soldiers' canteen — rough, meaty, abundant — became the template for what Bengalurians would one day call a <em>Military Hotel</em>.
+                                }}>B</span>
+                                angalore is a city known for its rich culture and of course, it’s absolutely mouth-watering food. Most identify this city by the chaotic yet fulfilling Darshinis, but there is also another culinary culture with a stark contrast of a predominantly non veg delicacies; The military hotels.
+With its red oxidized floors and strong, stable wooden doors, military hotels serve history and tradition on a plate. The ghee-soaked biryani accompanied by the most delicious side dishes are way beyond just food. It is centuries old recipes passed down generation by generation and made with utmost pride and served without compromising its authenticity.
                             </p>
                         </TextReveal>
+  </div>
 
-                        <TextReveal direction="up" delay={0.1}>
-                            <p className="body-text" style={{ marginTop: 20 }}>
-                                Today, military hotels are civilian restaurants — but the lineage runs deep. The banana-leaf biryani, the steel plates, the kaal soup before 9 AM, the complete absence of a printed menu — these are not aesthetic choices. They are the fossilised rituals of an army mess, preserved by cooks whose grandfathers fed soldiers in the barracks.
-                            </p>
-                        </TextReveal>
-                    </div>
+
 
                     {/* Right — stats */}
                     <div>
@@ -85,20 +83,22 @@ export default function Intro(): JSX.Element {
                                 fontSize: 18, lineHeight: 1.6,
                                 color: 'var(--cream)',
                             }}>
-                                "The word 'military' tells you everything: it means the meat is fresh, the fire is high, and there are no pretensions."
+                                Military hotels are remembered not only for their food, but for the generations of cooks, workers, and customers who have shaped Bengaluru's culinary culture.
                             </span>
-                            <div style={{
+                            {/* <div style={{
                                 marginTop: 16,
                                 fontFamily: "'Bebas Neue', sans-serif",
                                 fontSize: 11, letterSpacing: 3,
                                 color: 'var(--gold)', opacity: 0.7,
                             }}>
                                 — Food critic Vikram Doctor, 2023
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        
+        </>
     )
 }

@@ -1,7 +1,35 @@
+import { useEffect, useState } from 'react'
 import type { JSX } from 'react'
-import { GALLERY_ITEMS } from '../../data/galleryItems'
+
+// Use import.meta.glob to get async import functions, then load them at runtime.
+const modules = import.meta.glob('../../assets/photo/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}') as Record<string, () => Promise<{ default: string }>>
+
+type ImgItem = { src: string; label: string; caption: string }
+
 
 export default function ImageGallery(): JSX.Element {
+    const [images, setImages] = useState<ImgItem[]>([])
+
+    useEffect(() => {
+        let mounted = true
+        async function load() {
+            const entries = await Promise.all(Object.entries(modules).map(async ([p, resolver]) => {
+                try {
+                    const mod = await resolver()
+                    const src = mod && mod.default ? mod.default : ''
+                    const name = p.split('/').pop() || p
+                    const label = name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')
+                    return { src, label, caption: '' } as ImgItem
+                } catch (e) {
+                    return null
+                }
+            }))
+            const filtered = entries.filter(Boolean) as ImgItem[]
+            if (mounted) setImages(filtered)
+        }
+        load()
+        return () => { mounted = false }
+    }, [])
     return (
         <section id="gallery" style={{ background: 'var(--charcoal)' }}>
             <div className="section-inner">
@@ -18,9 +46,9 @@ export default function ImageGallery(): JSX.Element {
                 gap: 3,
                 paddingBottom: 80,
             }}>
-                {GALLERY_ITEMS.map((g, i) => (
+                {images.map((g, i) => (
                     <div
-                        key={i}
+                        key={g.label + i}
                         style={{
                             position: 'relative', overflow: 'hidden',
                             cursor: 'pointer',
@@ -31,11 +59,10 @@ export default function ImageGallery(): JSX.Element {
                         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.01)')}
                         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                     >
-                        {/* Image */}
+                            {/* Image */}
                         <div style={{
                             position: 'absolute', inset: 0,
-                            backgroundImage: `url(${g.img})`,
-                            backgroundColor: g.color,
+                            backgroundImage: g.src ? `url(${g.src})` : undefined,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             transition: 'transform 0.5s',

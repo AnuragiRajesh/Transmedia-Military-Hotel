@@ -12,7 +12,7 @@ export default function Hero(): JSX.Element {
             {/* ── Background photo ── */}
             <div style={{
                 position: 'absolute', inset: 0,
-                backgroundImage: 'url(/hero-shivaji.jpg)',
+                backgroundImage: 'url(/hero-shivaji.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center 40%',
                 backgroundRepeat: 'no-repeat',
@@ -90,7 +90,7 @@ export default function Hero(): JSX.Element {
                     fontSize: 12, letterSpacing: 3,
                     color: 'var(--gold)', opacity: 0.55,
                 }}>
-                    By [Your Name] · May 2026
+                    By [Group 10] · May 2026
                 </div>
             </div>
 

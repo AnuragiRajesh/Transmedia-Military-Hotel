@@ -14,17 +14,18 @@ export default function Timeline(): JSX.Element {
             </div>
 
             <div style={{
-                maxWidth: 800,
-                margin: '40px auto 0',
+                maxWidth: 920,
+                margin: '48px auto 0',
                 position: 'relative',
+                paddingLeft: 24,
             }}>
                 {/* Vertical line */}
                 <div style={{
                     position: 'absolute',
-                    left: 40, top: 0, bottom: 0,
+                    left: 140, top: 0, bottom: 0,
                     width: 1,
                     background: 'linear-gradient(to bottom, var(--gold), transparent)',
-                    opacity: 0.3,
+                    opacity: 0.35,
                 }} />
 
                 {TIMELINE.map((t, i) => (
@@ -37,11 +38,11 @@ export default function Timeline(): JSX.Element {
                     }}>
                         <div style={{
                             fontFamily: "'Bebas Neue', sans-serif",
-                            fontSize: 20, color: 'var(--gold)',
-                            width: 80, textAlign: 'right',
-                            flexShrink: 0, paddingTop: 2,
+                            fontSize: 18, color: 'var(--gold)',
+                            width: 140, textAlign: 'right',
+                            flexShrink: 0, paddingTop: 4,
                         }}>
-                            {t.year}
+                            {/* {t.year} */}
                         </div>
 
                         {/* Dot */}
@@ -53,17 +54,18 @@ export default function Timeline(): JSX.Element {
                             flexShrink: 0, marginTop: 6,
                         }} />
 
-                        <div style={{ flex: 1 }}>
+                        <div style={{ flex: 1, paddingLeft: 12 }}>
                             <div style={{
                                 fontFamily: "'Playfair Display', serif",
-                                fontSize: 18, fontWeight: 600,
-                                color: 'var(--cream)', marginBottom: 8,
+                                fontSize: 20, fontWeight: 600,
+                                color: 'var(--cream)', marginBottom: 10,
                             }}>
-                                {t.event}
+                                {t.event}: {t.year} 
                             </div>
                             <div style={{
-                                fontSize: 14, lineHeight: 1.7,
-                                color: 'var(--cream-dark)', opacity: 0.75,
+                                fontSize: 15, lineHeight: 1.8,
+                                color: 'var(--cream-dark)', opacity: 0.85,
+                                maxWidth: 680,
                             }}>
                                 {t.desc}
                             </div>
