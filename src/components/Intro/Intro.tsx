@@ -21,7 +21,6 @@ export default function Intro(): JSX.Element {
                     {/* Left — story opening */}
                     <div>
                         <div className="section-label">Introduction</div>
-                        <h2 className="section-title">A City Within a City</h2>
                         <div className="divider" />
 
                         {/* Drop cap paragraph via TextReveal */}
