@@ -9,7 +9,7 @@ export default function Timeline(): JSX.Element {
         }}>
             <div style={{ maxWidth: 1200, margin: '0 auto' }}>
                 <div className="section-label">History</div>
-                <h2 className="section-title">225 Years from Mess to Table</h2>
+                <h2 className="section-title">225 years and counting</h2>
                 <div className="divider" />
             </div>
 
