@@ -36,9 +36,21 @@ export default function Intro(): JSX.Element {
                                     fontFamily: "'Playfair Display', serif",
                                     fontWeight: 900, lineHeight: 0.75,
                                     color: 'var(--gold)', marginRight: 12, marginTop: 8,
-                                }}>B</span>
-                                angalore is a city known for its rich culture and of course, it’s absolutely mouth-watering food. Most identify this city by the chaotic yet fulfilling Darshinis, but there is also another culinary culture with a stark contrast of a predominantly non veg delicacies; The military hotels.
-With its red oxidized floors and strong, stable wooden doors, military hotels serve history and tradition on a plate. The ghee-soaked biryani accompanied by the most delicious side dishes are way beyond just food. It is centuries old recipes passed down generation by generation and made with utmost pride and served without compromising its authenticity.
+                                }}>I</span>
+                                f you've ever found yourself in a BMTC bus, head lazily resting on the window, looking
+                                out at the moving city, you might have come across banners titled 'military hotels'. And
+                                maybe just for a second your brain goes "huh, I wonder what those are". You probably
+                                assume it's some sort of eatery — but why is it called that? Is it different in some way,
+                                or is it no more than a quirky, differentiable name?
+
+                                Normally dozens of questions like these pass through our heads day to day, but writing
+                                this article gave us the chance to dig into that apparently silly question. We asked
+                                around for the best place in town and off we went to Shivaji Military Hotel — a place
+                                often described as one of the oldest in the city, established in the early 1900s by
+                                Manji Rao. The glamour of history and vintage of the establishment is not apparent at
+                                first glance.
+
+                                
                             </p>
                         </TextReveal>
   </div>

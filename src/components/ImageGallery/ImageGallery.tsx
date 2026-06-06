@@ -54,10 +54,18 @@ export default function ImageGallery(): JSX.Element {
                             cursor: 'pointer',
                             gridColumn: i % 3 === 0 ? 'span 2' : 'span 1',
                             gridRow: i % 5 === 1 ? 'span 2' : 'span 1',
-                            transition: 'transform 0.3s',
+                            transition: 'transform 0.25s ease',
                         }}
-                        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.01)')}
-                        onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.transform = 'scale(1.03)'
+                            const img = e.currentTarget.children[0] as HTMLElement | undefined
+                            if (img) img.style.transform = 'scale(1.08)'
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.transform = 'scale(1)'
+                            const img = e.currentTarget.children[0] as HTMLElement | undefined
+                            if (img) img.style.transform = 'scale(1)'
+                        }}
                     >
                             {/* Image */}
                         <div style={{
@@ -65,7 +73,9 @@ export default function ImageGallery(): JSX.Element {
                             backgroundImage: g.src ? `url(${g.src})` : undefined,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
-                            transition: 'transform 0.5s',
+                            transition: 'transform 0.6s ease',
+                            transform: 'scale(1)',
+                            willChange: 'transform',
                         }} />
 
                         {/* Gradient overlay */}
