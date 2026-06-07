@@ -40,18 +40,33 @@ export default function App(): JSX.Element {
         <section>
           <div className="section-inner" style={{ marginTop: -3 }}>
             {article.map((p, idx) => (
-              <p
-                key={idx}
-                className="body-text"
-                style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 16 }}
-              >
-                {p}
-              </p>
+              <div key={idx}>
+                {/* Insert Video above the 'Hindu' Military hotels? heading */}
+                {p.includes('Hindu') && p.includes('Military hotels') ? (
+                  <div style={{ marginBottom: 24 }}>
+                    <VideoReport
+                      videoSrc={sampleVideo}
+                      title="Video Report: Inside the Kitchen"
+                      duration="08:45"
+                      caption="Field footage from Shivaji and neighbourhood kitchens."
+                    />
+                  </div>
+                ) : null}
+
+                {/* Insert Audio above the 'Why do Military Hotels still matter?' heading */}
+                {p === 'Why do Military Hotels still matter?' ? (
+                  <div style={{ marginBottom: 24 }}>
+                    <AudioSection />
+                  </div>
+                ) : null}
+
+                <p className="body-text" style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 16 }}>
+                  {p}
+                </p>
+              </div>
             ))}
           </div>
         </section>
-        <VideoReport videoSrc={sampleVideo} title="Video Report: Inside the Kitchen" duration="08:45" caption="Field footage from Shivaji and neighbourhood kitchens." />
-        <AudioSection />
         <ImageGallery />
         <MapSection />
         <Timeline />
