@@ -1,5 +1,4 @@
 const article: string[] = [
-  "Military Hotels",
   "Restaurants that preserve Bengaluru's non vegetarian food culture",
   "If you've ever found yourself in a BMTC bus, head lazily resting on the window, looking out at the moving city - you might have come across banners titled 'military hotels'. And maybe just for a second your brain goes \"huh, I wonder what those are\". I mean sure, you probably figure instantaneously that it's some sort of an eatery - but why is it called that? Is it different in some way? or is it no more than just a quirky differentiable name?",
   "Normally dozens of questions like these pass through our heads day to day but writing this article meant we could actually afford to dig into an apparently silly question like this. So we asked around for the best place in town and off we went, to Shivaji Military Hotel - which is supposed to be the oldest in the city, established in 1908 by Manji Rao. But the glamour of history and vintage of the establishment would not be evident at first glance.",

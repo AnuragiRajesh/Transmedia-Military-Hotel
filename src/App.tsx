@@ -60,9 +60,25 @@ export default function App(): JSX.Element {
                   </div>
                 ) : null}
 
-                <p className="body-text" style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 16 }}>
-                  {p}
-                </p>
+                {(() => {
+                  const bigHeadings = new Set([
+                    "Restaurants that preserve Bengaluru's non vegetarian food culture",
+                    'Why are they called \u201cmilitary hotels?\u201d',
+                    "What's so different about these eateries?",
+                    '\u2018Hindu\u2019 Military hotels?',
+                    'Why do Military Hotels still matter?',
+                  ])
+                  const isBig = bigHeadings.has(p)
+                  return isBig ? (
+                    <p className="body-text" style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 24, fontSize: '1.6rem', fontWeight: 700 }}>
+                      {p}
+                    </p>
+                  ) : (
+                    <p className="body-text" style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 16 }}>
+                      {p}
+                    </p>
+                  )
+                })()}
               </div>
             ))}
           </div>
