@@ -3,7 +3,6 @@ import type { JSX } from 'react'
 
 import Nav from './components/Nav/Nav'
 import Hero from './components/Hero/Hero'
-import Intro from './components/Intro/Intro'
 import HotelsGrid from './components/Hotels/HotelsGrid'
 import VideoReport from './components/VideoSection/VideoSection'
 import sampleVideo from './assets/video/video.mp4'
