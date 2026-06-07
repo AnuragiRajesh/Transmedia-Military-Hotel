@@ -24,7 +24,9 @@ export default function ImageGallery(): JSX.Element {
                     return null
                 }
             }))
-            const filtered = entries.filter(Boolean) as ImgItem[]
+            // filter out unwanted images (e.g., nalli soup) by filename/label
+            const filtered = (entries.filter(Boolean) as ImgItem[])
+                .filter(item => !item.label.toLowerCase().includes('nalli'))
             if (mounted) setImages(filtered)
         }
         load()

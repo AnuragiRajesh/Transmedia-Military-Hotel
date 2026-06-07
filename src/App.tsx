@@ -37,52 +37,64 @@ export default function App(): JSX.Element {
         {/* <Intro /> */}
             
         <HotelsGrid />
-        <section>
-          <div className="section-inner" style={{ marginTop: -3 }}>
-            {article.map((p, idx) => (
-              <div key={idx}>
-                {/* Insert Video above the 'Hindu' Military hotels? heading */}
-                {p.includes('Hindu') && p.includes('Military hotels') ? (
-                  <div style={{ marginBottom: 24 }}>
-                    <VideoReport
-                      videoSrc={sampleVideo}
-                      title="Video Report: Inside the Kitchen"
-                      duration="08:45"
-                      caption="Field footage from Shivaji and neighbourhood kitchens."
-                    />
-                  </div>
-                ) : null}
+        {/* Render article in two parts so the video can live in its own section */}
+        {(() => {
+          const hinduIdx = article.findIndex(p => p.includes('Hindu') && p.includes('Military hotels'))
+          const splitIndex = hinduIdx >= 0 ? hinduIdx : article.length
+          const firstPart = article.slice(0, splitIndex)
+          const secondPart = article.slice(splitIndex)
 
-                {/* Insert Audio above the 'Why do Military Hotels still matter?' heading */}
-                {p === 'Why do Military Hotels still matter?' ? (
-                  <div style={{ marginBottom: 24 }}>
-                    <AudioSection />
-                  </div>
-                ) : null}
+          const renderParagraph = (p: string, idx: number) => {
+            const bigHeadings = new Set([
+              "Restaurants that preserve Bengaluru's non vegetarian food culture",
+              'Why are they called \u201cmilitary hotels?\u201d',
+              "What's so different about these eateries?",
+              '\u2018Hindu\u2019 Military hotels?',
+              'Why do Military Hotels still matter?',
+            ])
+            const isBig = bigHeadings.has(p)
+            return isBig ? (
+              <p key={idx} className="body-text" style={{ margin: '0 auto', marginTop: 24, fontSize: '1.6rem', fontWeight: 700 }}>
+                {p}
+              </p>
+            ) : (
+              <p key={idx} className="body-text" style={{ margin: '0 auto', marginTop: 16 }}>
+                {p}
+              </p>
+            )
+          }
 
-                {(() => {
-                  const bigHeadings = new Set([
-                    "Restaurants that preserve Bengaluru's non vegetarian food culture",
-                    'Why are they called \u201cmilitary hotels?\u201d',
-                    "What's so different about these eateries?",
-                    '\u2018Hindu\u2019 Military hotels?',
-                    'Why do Military Hotels still matter?',
-                  ])
-                  const isBig = bigHeadings.has(p)
-                  return isBig ? (
-                    <p className="body-text" style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 24, fontSize: '1.6rem', fontWeight: 700 }}>
-                      {p}
-                    </p>
-                  ) : (
-                    <p className="body-text" style={{ margin: '0 auto', marginTop: idx === 0 ? 0 : 16 }}>
-                      {p}
-                    </p>
-                  )
-                })()}
-              </div>
-            ))}
-          </div>
-        </section>
+          return (
+            <>
+              <section>
+                <div className="section-inner" style={{ marginTop: -3 }}>
+                  {firstPart.map((p, i) => renderParagraph(p, i))}
+                </div>
+              </section>
+
+              {/* Video in its own section to ensure spacing and full styling */}
+              <VideoReport videoSrc={sampleVideo} title="Video Report: Inside the Kitchen" duration="08:45" caption="Field footage from Shivaji and neighbourhood kitchens." />
+
+              <section>
+                <div className="section-inner" style={{ marginTop: 0 }}>
+                  {secondPart.map((p, i) => {
+                    const globalIdx = splitIndex + i
+                    // Insert Audio above the 'Why do Military Hotels still matter?' heading
+                    if (p === 'Why do Military Hotels still matter?') {
+                      return (
+                          <div key={globalIdx}>
+                            <div style={{ marginTop: 48, marginBottom: 24 }}><AudioSection /></div>
+                            {renderParagraph(p, globalIdx)}
+                          </div>
+                        )
+                    }
+                    return renderParagraph(p, globalIdx)
+                  })}
+                </div>
+              </section>
+            </>
+          )
+        })()}
         <ImageGallery />
         <MapSection />
         <Timeline />

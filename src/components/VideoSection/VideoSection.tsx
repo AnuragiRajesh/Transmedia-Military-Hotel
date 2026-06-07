@@ -34,7 +34,8 @@ export default function VideoReport({
             background: '#261709',
             borderTop: '1px solid rgba(200,168,75,0.15)',
             borderBottom: '1px solid rgba(200,168,75,0.15)',
-            padding: '80px 0',
+            paddingTop: 120,
+            paddingBottom: 72,
         }}>
             <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 60px' }}>
                 <div className="section-label">Video Report</div>
